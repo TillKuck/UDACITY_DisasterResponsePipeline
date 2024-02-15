@@ -1,16 +1,61 @@
 import sys
-
+import pandas as pd
+import numpy as np
+from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
-    pass
+    """
+    Parameters
+    ----------
+    Input: filepaths of csv files
+    ----------
+    Return: Load datasets, merge them and return final dataset 
+    """
+    messages = pd.read_csv(messages_filepath)
+    categories = pd.read_csv(categories_filepath)
+    df = messages.merge(categories, on='id')
+    return df
 
 
 def clean_data(df):
-    pass
+    """
+    Parameters
+    ----------
+    Input: Merged dataset
+    ----------
+    Return: transforms dataset 
+    """
+    # create a dataframe of the 36 individual category columns and rename columns 
+    categories = df['categories'].str.split(';', expand=True)
+    row = categories.iloc[0]
+    category_colnames = row.apply(lambda x: x[:-2])
+    categories.columns = category_colnames
+
+    # convert category values to just numbers 0 or 1
+    for column in categories:
+        categories[column] = categories[column].apply(lambda x: x[-1])
+        categories[column] = categories[column].astype(int)
+
+    # replace categories column in df with new category columns
+    df.drop('categories', axis=1, inplace=True)
+    df = pd.concat([df, categories], axis=1)
+
+    # remove duplicates
+    df.drop_duplicates(inplace=True)
+
+    return df
 
 
 def save_data(df, database_filename):
-    pass  
+    """
+    Parameters
+    ----------
+    Input: Merged dataset
+    ----------
+    Return: transforms dataset 
+    """
+    engine = create_engine('sqlite:///', database_filename)
+    df.to_sql('categorized_messages', engine, index=False)  
 
 
 def main():
