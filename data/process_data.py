@@ -5,26 +5,32 @@ from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
     """
-    Parameters
+    Load data from filepath
     ----------
-    Input: filepaths of csv files
+    Parameters:
+    - messages_filepath: file path where messages data is stored
+    - categories_filepath: file path where category data is stored
     ----------
-    Return: Load datasets, merge them and return final dataset 
+    Return: merged dataframe
     """
+
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = messages.merge(categories, on='id')
+
     return df
 
 
 def clean_data(df):
     """
-    Parameters
+    Clean data by creating columns for all labels
     ----------
-    Input: Merged dataset
+    Parameters:
+    - df: dataframe
     ----------
-    Return: transforms dataset 
+    Return: dataframe
     """
+
     # create a dataframe of the 36 individual category columns and rename columns 
     categories = df['categories'].str.split(';', expand=True)
     row = categories.iloc[0]
@@ -46,15 +52,18 @@ def clean_data(df):
     return df
 
 
-def save_data(df, database_filename):
+def save_data(df, database_filepath):
     """
-    Parameters
+    Save data to sqlite database
     ----------
-    Input: Merged dataset
+    Parameters:
+    df: dataframe
+    database_filename: file path where data should be saved
     ----------
-    Return: transforms dataset 
+    Return: /
     """
-    engine = create_engine('sqlite:///', database_filename)
+    
+    engine = create_engine('sqlite:///', database_filepath)
     df.to_sql('categorized_messages', engine, index=False)  
 
 
