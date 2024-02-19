@@ -25,16 +25,17 @@ def load_data(database_filepath):
     Parameters:
     - database_filepath: file path where data is stored
     ----------
-    Return: Fitted model
+    Return: features (X, dataframe), labels (Y, dataframe), label column names (category_names, list)
     """
 
-    engine = create_engine('sqlite:///', database_filepath)
+    engine = create_engine(f'sqlite:///{database_filepath}')
     df = pd.read_sql_table('categorized_messages', engine)
     df = df[df['related'] != 2] # 4 instances have the value 2. Model doesn't work with these, so I remove them
     X = df['message'].head(5000) # For faster processing, I limit the data
     Y = df.drop(['id', 'message', 'original', 'genre'], axis=1).head(5000)
+    category_names = Y.columns
     
-    return X, Y
+    return X, Y, category_names
 
 
 def tokenize(text):
@@ -55,7 +56,7 @@ def tokenize(text):
         tokens = word_tokenize(message.lower())
         tokens = [token for token in tokens if token not in stopwords.words("english")]
         tokens = [WordNetLemmatizer().lemmatize(token) for token in tokens]
-#         tokens = [PorterStemmer().stem(token) for token in tokens]
+        # tokens = [PorterStemmer().stem(token) for token in tokens]
         clean_tokens.append(' '.join(tokens))
         
     return clean_tokens

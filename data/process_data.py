@@ -62,8 +62,8 @@ def save_data(df, database_filepath):
     ----------
     Return: /
     """
-    
-    engine = create_engine('sqlite:///', database_filepath)
+
+    engine = create_engine(f'sqlite:///{database_filepath}')
     df.to_sql('categorized_messages', engine, index=False)  
 
 
