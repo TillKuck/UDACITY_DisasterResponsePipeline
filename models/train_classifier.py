@@ -30,7 +30,6 @@ def load_data(database_filepath):
 
     engine = create_engine(f'sqlite:///{database_filepath}')
     df = pd.read_sql_table('categorized_messages', engine)
-    df = df[df['related'] != 2] # 4 instances have the value 2. Model doesn't work with these, so I remove them
     X = df['message']
     Y = df.drop(['id', 'message', 'original', 'genre'], axis=1)
     category_names = Y.columns

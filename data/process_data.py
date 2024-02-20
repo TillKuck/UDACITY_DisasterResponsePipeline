@@ -46,8 +46,9 @@ def clean_data(df):
     df.drop('categories', axis=1, inplace=True)
     df = pd.concat([df, categories], axis=1)
 
-    # remove duplicates
+    # remove duplicates and convert multiclass to binary
     df.drop_duplicates(inplace=True)
+    df = df[df['related'] != 2] # 4 instances have the value 2. Model doesn't work with these, so I remove them
 
     return df
 
@@ -64,7 +65,7 @@ def save_data(df, database_filepath):
     """
 
     engine = create_engine(f'sqlite:///{database_filepath}')
-    df.to_sql('categorized_messages', engine, index=False)  
+    df.to_sql('categorized_messages', engine, index=False, if_exists='replace')  
 
 
 def main():
