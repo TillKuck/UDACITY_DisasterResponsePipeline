@@ -55,7 +55,6 @@ def tokenize(text):
         tokens = word_tokenize(message.lower())
         tokens = [token for token in tokens if token not in stopwords.words("english")]
         tokens = [WordNetLemmatizer().lemmatize(token) for token in tokens]
-        # tokens = [PorterStemmer().stem(token) for token in tokens]
         clean_tokens.append(' '.join(tokens))
         
     return clean_tokens
@@ -83,7 +82,7 @@ def build_model():
         'clf__estimator__n_estimators': [10]
     }
 
-    cv = GridSearchCV(pipeline, param_grid=parameters)
+    cv = GridSearchCV(pipeline, param_grid=parameters, verbose=3)
 
     return cv
 
