@@ -47,8 +47,9 @@ def index():
     genre_names = list(genre_counts.index)
     label_names = df.columns[4:]
     label_counts = [df[label].sum() for label in label_names]
-
-
+    label_df = pd.DataFrame({'labels': label_names, 'count': label_counts}).sort_values(by='count', ascending=False)
+    label_names_bar = label_df.iloc[:10, 0]
+    label_counts_bar = label_df.iloc[:10, 1]
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
@@ -74,8 +75,8 @@ def index():
         {
             'data': [
                 Bar(
-                    x=label_names,
-                    y=label_counts
+                    x=label_names_bar,
+                    y=label_counts_bar
                 )
             ],
 
