@@ -35,3 +35,6 @@ app: Includes the web app files for user interaction and result visualization.
 
 
 ### Screenshots
+![Picture of the Disaster Response Classifiers](image-1.png)
+![Bar chart of count per genre](image-2.png)
+![Bar chart of count per label](image-3.png)
