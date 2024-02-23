@@ -13,9 +13,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 
 from nltk.stem import WordNetLemmatizer
-from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+import nltk
+nltk.download(['punkt', 'wordnet', 'stopwords'])
 
 
 def load_data(database_filepath):
@@ -30,6 +31,7 @@ def load_data(database_filepath):
 
     engine = create_engine(f'sqlite:///{database_filepath}')
     df = pd.read_sql_table('categorized_messages', engine)
+    df = df.iloc[:1000, :]
     X = df['message']
     Y = df.drop(['id', 'message', 'original', 'genre'], axis=1)
     category_names = Y.columns
@@ -78,7 +80,7 @@ def build_model():
 
     parameters = {
         'clf__estimator__min_samples_leaf': [2],
-        'clf__estimator__max_depth': [7],
+        'clf__estimator__max_depth': [4],
         'clf__estimator__n_estimators': [10]
     }
 
@@ -101,7 +103,9 @@ def evaluate_model(model, X_test, Y_test, category_names):
     """
 
     y_pred_cv = model.predict(X_test)
-    print(classification_report(Y_test, y_pred_cv, target_names=category_names))
+    print(classification_report(y_true=Y_test,
+                                y_pred=y_pred_cv,
+                                target_names=category_names))
 
 
 def save_model(model, model_filepath):
