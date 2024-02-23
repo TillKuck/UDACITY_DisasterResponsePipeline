@@ -5,19 +5,19 @@ Natural disasters often lead to an overwhelming influx of messages seeking assis
 
 
 ## Key Features
-Machine Learning Pipeline: The project incorporates a robust machine learning pipeline that processes and classifies messages into various categories, ensuring a rapid and accurate response.
+**Machine Learning Pipeline:** The project incorporates a robust machine learning pipeline that processes and classifies messages into various categories, ensuring a rapid and accurate response.
 
-Web App Interface: An intuitive web app provides a user-friendly interface for emergency workers to input new messages. The app then displays classification results for quick decision-making.
+**Web App Interface:** An intuitive web app provides a user-friendly interface for emergency workers to input new messages. The app then displays classification results for quick decision-making.
 
-Visualizations: The web app includes visualizations that offer insights into the dataset, aiding emergency workers in understanding trends, patterns, and the overall distribution of messages across different categories.
+**Visualizations:** The web app includes visualizations that offer insights into the dataset, aiding emergency workers in understanding trends, patterns, and the overall distribution of messages across different categories.
 
 
 ## Project Structure
-data: Contains the dataset used for training and testing the machine learning model.
+**data:** Contains the dataset used for training and testing the machine learning model.
 
-models: Houses the machine learning pipeline and the trained model.
+**models:** Houses the machine learning pipeline and the trained model.
 
-app: Includes the web app files for user interaction and result visualization.
+**app:** Includes the web app files for user interaction and result visualization.
 
 
 ### Instructions:
