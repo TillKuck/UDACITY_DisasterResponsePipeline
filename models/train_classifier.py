@@ -1,9 +1,8 @@
 import sys
-import numpy as np
-import pandas as pd
 import re
-from sqlalchemy import create_engine
 import pickle
+from sqlalchemy import create_engine
+import pandas as pd
 
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.pipeline import Pipeline
@@ -26,12 +25,12 @@ def load_data(database_filepath):
     Parameters:
     - database_filepath: file path where data is stored
     ----------
-    Return: features (X, dataframe), labels (Y, dataframe), label column names (category_names, list)
+    Return: features (X, dataframe), labels (Y, dataframe), 
+            label column names (category_names, list)
     """
 
     engine = create_engine(f'sqlite:///{database_filepath}')
     df = pd.read_sql_table('categorized_messages', engine)
-    df = df.iloc[:1000, :]
     X = df['message']
     Y = df.drop(['id', 'message', 'original', 'genre'], axis=1)
     category_names = Y.columns
